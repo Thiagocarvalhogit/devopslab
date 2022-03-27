@@ -8,8 +8,9 @@ on:
       - main
 
 jobs:
-  Build:
+  UnitTest:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -17,14 +18,13 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.7.11'
+          python-version: '3.10'
 
       - name: Install Requirements
-        run:  pip install flask
-              
+        run:  pip install flask pytest flask-wtf
+
       - name: Unit Test
         run: python -m unittest -v test
-
 
   SonarCloud:
       name: SonarCloud
@@ -40,7 +40,7 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   Build:
-    needs: [UnitTest,SonarCloud]
+    needs: [UnitTest,SonarCloud ]
     name: Build
     runs-on: ubuntu-latest
 
